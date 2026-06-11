@@ -1,121 +1,95 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useMemo, useState } from 'react'
+import { FleetRanking } from './components/FleetRanking'
+import { Hero } from './components/Hero'
+import { MetricsGrid } from './components/MetricsGrid'
+import { RoutePlanner } from './components/RoutePlanner'
+import { vehicles } from './data/vehicles.mock'
+import { routes } from './data/routes.mock'
+import { calculateSustainabilityImpact } from './domain/financialImpactEngine'
+import { findBestVehicle, getMaintenanceRecommendation } from './domain/maintenanceEngine'
+import { calculateVehicleRisk, classifyRisk, getRiskTone } from './domain/riskEngine'
+import {
+  calculateRouteStress,
+  estimateRouteFuelLiters,
+  getRouteDifficulty,
+} from './domain/routeStressEngine'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [selectedRouteId, setSelectedRouteId] = useState(routes[0].id)
+  const selectedRoute = routes.find((route) => route.id === selectedRouteId)
+
+  const fleetAnalysis = useMemo(() => {
+    const rankedVehicles = vehicles.map((vehicle) => {
+      const riskScore = calculateVehicleRisk(vehicle, selectedRoute)
+
+      return {
+        ...vehicle,
+        riskScore,
+        riskLevel: classifyRisk(riskScore),
+        riskTone: getRiskTone(riskScore),
+        fuelLiters: estimateRouteFuelLiters(selectedRoute, vehicle),
+      }
+    })
+
+    const bestVehicle = findBestVehicle(rankedVehicles)
+
+    return rankedVehicles
+      .map((vehicle) => ({
+        ...vehicle,
+        recommendation: getMaintenanceRecommendation(vehicle, vehicle.riskScore, selectedRoute),
+        impact: calculateSustainabilityImpact(selectedRoute, vehicle, vehicle.riskScore, bestVehicle),
+        isBest: vehicle.id === bestVehicle.id,
+      }))
+      .sort((a, b) => a.riskScore - b.riskScore)
+  }, [selectedRoute])
+
+  const bestVehicle = fleetAnalysis.find((vehicle) => vehicle.isBest)
+  const criticalVehicles = fleetAnalysis.filter((vehicle) => vehicle.riskScore >= 82).length
+  const routeStress = calculateRouteStress(selectedRoute)
+  const averageRisk = Math.round(
+    fleetAnalysis.reduce((total, vehicle) => total + vehicle.riskScore, 0) / fleetAnalysis.length,
+  )
+  const avoidableCo2 = fleetAnalysis.reduce(
+    (total, vehicle) => total + vehicle.impact.avoidableCo2Kg,
+    0,
+  )
+
+  const metrics = [
+    {
+      label: 'Risco médio da frota',
+      value: `${averageRisk}/100`,
+      detail: 'score operacional',
+    },
+    {
+      label: 'Veículos críticos',
+      value: criticalVehicles,
+      detail: 'exigem ação preventiva',
+    },
+    {
+      label: 'Estresse da rota',
+      value: `${routeStress}/100`,
+      detail: getRouteDifficulty(routeStress),
+    },
+    {
+      label: 'CO2 evitável',
+      value: `${avoidableCo2.toFixed(1)} kg`,
+      detail: 'comparando com o melhor veículo',
+    },
+  ]
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+    <main className="min-h-screen bg-[#f7f8f3] bg-[linear-gradient(180deg,rgba(235,242,238,0.92),rgba(250,251,247,0.98)_38%)] text-[#17201b]">
+      <Hero />
+      <MetricsGrid metrics={metrics} />
+      <RoutePlanner
+        bestVehicle={bestVehicle}
+        routes={routes}
+        selectedRoute={selectedRoute}
+        selectedRouteId={selectedRouteId}
+        onSelectRoute={setSelectedRouteId}
+      />
+      <FleetRanking vehicles={fleetAnalysis} />
+    </main>
   )
 }
 
