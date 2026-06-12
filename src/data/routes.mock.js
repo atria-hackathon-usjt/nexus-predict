@@ -12,6 +12,10 @@ export const routes = [
     cargoKg: 2800,
     deadlineHours: 3.5,
     baselineConsumptionKmL: 7.4,
+    map: {
+      origin: { label: 'CD Guarulhos', lat: -23.4543, lng: -46.5337 },
+      destination: { label: 'Zona Sul SP', lat: -23.6824, lng: -46.7005 },
+    },
   },
   {
     id: 'RT-CPS-02',
@@ -26,6 +30,10 @@ export const routes = [
     cargoKg: 7600,
     deadlineHours: 6,
     baselineConsumptionKmL: 4.9,
+    map: {
+      origin: { label: 'CD Campinas', lat: -22.9056, lng: -47.0608 },
+      destination: { label: 'Sorocaba', lat: -23.5017, lng: -47.4581 },
+    },
   },
   {
     id: 'RT-BH-03',
@@ -40,6 +48,10 @@ export const routes = [
     cargoKg: 5200,
     deadlineHours: 4.5,
     baselineConsumptionKmL: 5.8,
+    map: {
+      origin: { label: 'Contagem', lat: -19.9167, lng: -44.0833 },
+      destination: { label: 'Grande BH', lat: -19.9129, lng: -43.9409 },
+    },
   },
   {
     id: 'RT-PR-04',
@@ -54,6 +66,10 @@ export const routes = [
     cargoKg: 11800,
     deadlineHours: 7,
     baselineConsumptionKmL: 4.1,
+    map: {
+      origin: { label: 'Curitiba', lat: -25.4296, lng: -49.2719 },
+      destination: { label: 'Joinville', lat: -26.3044, lng: -48.8487 },
+    },
   },
   {
     id: 'RT-RJ-05',
@@ -68,6 +84,10 @@ export const routes = [
     cargoKg: 3900,
     deadlineHours: 4,
     baselineConsumptionKmL: 6.6,
+    map: {
+      origin: { label: 'Duque de Caxias', lat: -22.7858, lng: -43.3117 },
+      destination: { label: 'Niterói', lat: -22.8832, lng: -43.1034 },
+    },
   },
   {
     id: 'RT-PE-06',
@@ -82,6 +102,10 @@ export const routes = [
     cargoKg: 3400,
     deadlineHours: 3,
     baselineConsumptionKmL: 6.9,
+    map: {
+      origin: { label: 'Cabo de Santo Agostinho', lat: -8.2876, lng: -35.0357 },
+      destination: { label: 'Recife', lat: -8.0476, lng: -34.877 },
+    },
   },
   {
     id: 'RT-RS-07',
@@ -96,6 +120,10 @@ export const routes = [
     cargoKg: 9200,
     deadlineHours: 6.5,
     baselineConsumptionKmL: 4.3,
+    map: {
+      origin: { label: 'Canoas', lat: -29.9177, lng: -51.1839 },
+      destination: { label: 'Caxias do Sul', lat: -29.1681, lng: -51.1794 },
+    },
   },
   {
     id: 'RT-BA-08',
@@ -110,6 +138,10 @@ export const routes = [
     cargoKg: 3100,
     deadlineHours: 3,
     baselineConsumptionKmL: 7.1,
+    map: {
+      origin: { label: 'Simões Filho', lat: -12.7849, lng: -38.403 },
+      destination: { label: 'Salvador', lat: -12.9777, lng: -38.5016 },
+    },
   },
   {
     id: 'RT-GO-09',
@@ -124,6 +156,10 @@ export const routes = [
     cargoKg: 14500,
     deadlineHours: 8,
     baselineConsumptionKmL: 4.2,
+    map: {
+      origin: { label: 'Aparecida de Goiânia', lat: -16.8233, lng: -49.2437 },
+      destination: { label: 'Brasília', lat: -15.7939, lng: -47.8828 },
+    },
   },
   {
     id: 'RT-SC-10',
@@ -138,6 +174,10 @@ export const routes = [
     cargoKg: 6100,
     deadlineHours: 4,
     baselineConsumptionKmL: 5.7,
+    map: {
+      origin: { label: 'Itajaí', lat: -26.9078, lng: -48.6611 },
+      destination: { label: 'Blumenau', lat: -26.9188, lng: -49.0661 },
+    },
   },
   {
     id: 'RT-CE-11',
@@ -152,6 +192,10 @@ export const routes = [
     cargoKg: 2400,
     deadlineHours: 2.5,
     baselineConsumptionKmL: 7.6,
+    map: {
+      origin: { label: 'Maracanaú', lat: -3.8766, lng: -38.6255 },
+      destination: { label: 'Fortaleza', lat: -3.7319, lng: -38.5267 },
+    },
   },
   {
     id: 'RT-MG-12',
@@ -166,5 +210,9 @@ export const routes = [
     cargoKg: 16800,
     deadlineHours: 9,
     baselineConsumptionKmL: 3.9,
+    map: {
+      origin: { label: 'Betim', lat: -19.9678, lng: -44.1983 },
+      destination: { label: 'Juiz de Fora', lat: -21.7622, lng: -43.3434 },
+    },
   },
 ]
