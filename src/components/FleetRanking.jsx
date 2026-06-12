@@ -1,32 +1,32 @@
 import { formatCurrency } from '../domain/financialImpactEngine'
 
 const riskStyles = {
-  low: 'bg-[#dcefe3] text-[#27613d]',
-  medium: 'bg-[#f5e8c7] text-[#7a5b13]',
-  high: 'bg-[#f4d4bd] text-[#8b421d]',
-  critical: 'bg-[#f0c8c8] text-[#8e2828]',
+  low: 'risk-low',
+  medium: 'risk-medium',
+  high: 'risk-high',
+  critical: 'risk-critical',
 }
 
 export function FleetRanking({ vehicles }) {
   return (
     <section className="mx-auto mt-4 mb-8 max-w-[1220px] px-6">
-      <div className="rounded-lg border border-[#d8ded6] bg-white/80 p-5.5 shadow-[0_16px_40px_rgba(33,54,42,0.08)]">
+      <div className="theme-panel rounded-lg border p-5.5">
         <div>
-          <p className="mb-2.5 text-xs font-extrabold tracking-[0.08em] text-[#52725e] uppercase">
-            Mock de veículos
+          <p className="theme-eyebrow mb-2.5 text-xs font-black uppercase">
+            Veículos
           </p>
-          <h2 className="text-[1.35rem] font-semibold tracking-normal text-[#13251b]">
+          <h2 className="theme-title text-[1.35rem] font-black tracking-normal">
             Ranking preventivo da frota
           </h2>
         </div>
 
         <div
-          className="mt-[18px] grid max-h-[560px] gap-2 overflow-y-auto pr-1 overscroll-contain [scrollbar-color:#8aa090_transparent] [scrollbar-width:thin] lg:max-h-[620px]"
+          className="theme-scroll mt-[18px] grid max-h-[560px] gap-2 overflow-y-auto pr-1 overscroll-contain lg:max-h-[620px]"
           role="table"
           aria-label="Ranking de veículos"
         >
           <div
-            className="hidden min-h-10 grid-cols-[1.35fr_0.55fr_1.4fr_0.65fr_0.95fr] gap-3.5 px-3.5 py-3 text-xs font-extrabold text-[#65756c] uppercase lg:grid"
+            className="theme-accent hidden min-h-10 grid-cols-[1.35fr_0.55fr_1.4fr_0.65fr_0.95fr] gap-3.5 px-3.5 py-3 text-xs font-black uppercase lg:grid"
             role="row"
           >
             <span>Veículo</span>
@@ -38,41 +38,48 @@ export function FleetRanking({ vehicles }) {
 
           {vehicles.map((vehicle) => (
             <div
-              className="grid min-h-[82px] grid-cols-1 items-center gap-3.5 rounded-[7px] border border-[#dde2db] bg-[#fbfcf8] px-3.5 py-3 text-left lg:grid-cols-[1.35fr_0.55fr_1.4fr_0.65fr_0.95fr]"
+              className="theme-card grid min-h-[82px] grid-cols-1 items-center gap-3.5 rounded-[7px] border px-3.5 py-3 text-left lg:grid-cols-[1.35fr_0.55fr_1.4fr_0.65fr_0.95fr]"
               role="row"
               key={vehicle.id}
             >
               <div>
-                <strong className="block text-[#17201b]">{vehicle.model}</strong>
-                <small className="block text-xs text-[#65756c]">
+                <div className="flex flex-wrap items-center gap-2">
+                  <strong className="theme-title block font-black">{vehicle.model}</strong>
+                  {vehicle.isAssigned ? (
+                    <span className="risk-low inline-flex rounded-full border px-2 py-0.5 text-[0.68rem] font-black uppercase">
+                      Atribuído
+                    </span>
+                  ) : null}
+                </div>
+                <small className="theme-muted block text-xs font-bold">
                   {vehicle.id} · {vehicle.category} · {vehicle.plate}
                 </small>
               </div>
               <div>
                 <span
-                  className={`inline-flex min-w-[76px] justify-center rounded-full px-2 py-1 text-xs font-black ${riskStyles[vehicle.riskTone]}`}
+                  className={`inline-flex min-w-[76px] justify-center rounded-full border px-2 py-1 text-xs font-black ${riskStyles[vehicle.riskTone]}`}
                 >
                   {vehicle.riskLevel}
                 </span>
-                <small className="block text-xs text-[#65756c]">{vehicle.riskScore}/100</small>
+                <small className="theme-muted block text-xs font-bold">{vehicle.riskScore}/100</small>
               </div>
               <div>
-                <strong className="block text-[#17201b]">{vehicle.recommendation.action}</strong>
-                <small className="block text-xs text-[#65756c]">
+                <strong className="theme-title block font-black">{vehicle.recommendation.action}</strong>
+                <small className="theme-muted block text-xs font-bold">
                   {vehicle.recommendation.detail}
                 </small>
               </div>
               <div>
-                <strong className="block text-[#17201b]">{vehicle.impact.co2Kg} kg</strong>
-                <small className="block text-xs text-[#65756c]">
+                <strong className="theme-title block font-black">{vehicle.impact.co2Kg} kg</strong>
+                <small className="theme-muted block text-xs font-bold">
                   {vehicle.impact.fuelLiters} L diesel estimados
                 </small>
               </div>
               <div>
-                <strong className="block text-[#17201b]">
+                <strong className="theme-title block font-black">
                   {formatCurrency(vehicle.impact.expectedUnplannedCostBrl)}
                 </strong>
-                <small className="block text-xs text-[#65756c]">
+                <small className="theme-muted block text-xs font-bold">
                   {vehicle.impact.avoidableCo2Kg} kg CO2 evitável ·{' '}
                   {formatCurrency(vehicle.impact.estimatedCostBrl)} combustível
                 </small>

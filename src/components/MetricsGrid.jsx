@@ -13,10 +13,12 @@ export function MetricsGrid({ metrics }) {
 
 function MetricCard({ label, value, detail }) {
   return (
-    <article className="rounded-lg border border-[#d8ded6] bg-white/80 p-[18px] text-left shadow-[0_16px_40px_rgba(33,54,42,0.08)]">
-      <span className="text-xs text-[#65756c]">{label}</span>
-      <strong className="mt-2 mb-1 block text-3xl leading-none text-[#13251b]">{value}</strong>
-      <small className="text-xs text-[#65756c]">{detail}</small>
+    <article className="theme-panel rounded-lg border p-[18px] text-left">
+      <span className="theme-eyebrow text-xs font-black uppercase">{label}</span>
+      <strong className="theme-title mt-2 mb-1 block text-3xl leading-none font-black">
+        {value}
+      </strong>
+      <small className="theme-muted text-xs font-bold">{detail}</small>
     </article>
   )
 }
